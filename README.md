@@ -33,7 +33,7 @@ A cutting-edge portfolio built for the **PLP Academy Portfolio Challenge** showc
 **Core Technologies:**  
 - HTML5, CSS3, JavaScript  
 - Tailwind CSS  
-- Three.js (3D visualization)  
+- 3D visualization 
 - Font Awesome Icons  
 
 ## 👤 About Me  
