@@ -1,0 +1,1836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>John Ojango | Digital Alchemist</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link href="style.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0A0A0F',
+                        secondary: '#FFC947',
+                        tertiary: '#00BCD4',
+                        accent: '#E1F5FE',
+                        dark: '#121420',
+                        light: '#F5F7FA',
+                        cyberblue: '#00f3ff',
+                        cyberpurple: '#9d4edd'
+                    },
+                    fontFamily: {
+                        heading: ['"Orbitron"', 'sans-serif'],
+                        body: ['"Exo 2"', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 5s infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'hologram': 'hologram 4s linear infinite',
+                        'neon': 'neon 1.5s ease-in-out infinite alternate'
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        hologram: {
+                            '0%': { 'background-position': '0% 0%' },
+                            '100%': { 'background-position': '100% 100%' }
+                        },
+                        neon: {
+                            '0%': { 
+                                'text-shadow': '0 0 5px #fff, 0 0 10px #fff, 0 0 15px #00BCD4, 0 0 20px #00BCD4',
+                                'box-shadow': '0 0 10px rgba(0, 188, 212, 0.5)'
+                            },
+                            '100%': { 
+                                'text-shadow': '0 0 10px #fff, 0 0 20px #fff, 0 0 30px #00BCD4, 0 0 40px #00BCD4',
+                                'box-shadow': '0 0 20px rgba(0, 188, 212, 0.8)'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Styles */
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background-color: #0A0A0F;
+            color: #F5F7FA;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(18, 20, 32, 0.8) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(18, 20, 32, 0.8) 0%, transparent 40%),
+                linear-gradient(to bottom, #0A0A0F, #07070C);
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        .golden-gradient {
+            background: linear-gradient(90deg, #FFC947 0%, #FFD700 50%, #FFC947 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(255, 201, 71, 0.3);
+        }
+        
+        .cyan-gradient {
+            background: linear-gradient(90deg, #00BCD4 0%, #4DD0E1 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .glass {
+            background: rgba(18, 20, 32, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 201, 71, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .section-header {
+            position: relative;
+            display: inline-block;
+            padding-bottom: 15px;
+        }
+        
+        .section-header:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #FFC947, #00BCD4);
+            border-radius: 2px;
+        }
+        
+        .hexagon {
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        }
+        
+        .skill-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            position: relative;
+            border-radius: 4px;
+        }
+        
+        .skill-progress {
+            position: absolute;
+            height: 100%;
+            background: linear-gradient(90deg, #FFC947, #FFD700);
+            border-radius: 4px;
+        }
+        
+        .project-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px -12px rgba(255, 201, 71, 0.25);
+        }
+        
+        .neon-text {
+            animation: neon 1.5s ease-in-out infinite alternate;
+        }
+        
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 0;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #00BCD4;
+            box-shadow: 0 0 10px rgba(0, 188, 212, 0.7);
+        }
+        
+        @keyframes pulse-gold {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(255, 201, 71, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(255, 201, 71, 0);
+            }
+        }
+        
+        .pulse-gold {
+            animation: pulse-gold 2s infinite;
+        }
+        
+        /* Particle Background */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            background: rgba(255, 201, 71, 0.6);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        
+        .chat-bubble {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            z-index: 100;
+            width: 60px;
+            height: 60px;
+            background: #25D366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4);
+            animation: pulse-gold 2s infinite;
+            transition: all 0.3s ease;
+        }
+        
+        .chat-bubble:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 30px rgba(37, 211, 102, 0.6);
+        }
+        
+        .chat-bubble i {
+            color: white;
+            font-size: 30px;
+        }
+        
+        /* UPDATED FOOTER STYLES */
+        footer {
+            background: rgba(10, 10, 15, 0.95);
+            padding: 50px 0 30px;
+            border-top: 1px solid rgba(255, 201, 71, 0.1);
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .footer-title {
+            font-size: 1.3rem;
+            color: #FFC947;
+            margin-bottom: 20px;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-links a {
+            color: #E1F5FE;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-links a:hover {
+            color: #FFC947;
+        }
+        
+        .footer-links i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            color: #FFC947;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .social-link:hover {
+            background: #FFC947;
+            color: #0A0A0F;
+            transform: translateY(-3px);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: #E1F5FE;
+            font-size: 0.9rem;
+        }
+        
+        .charity-link {
+            color: #00BCD4;
+            font-weight: 600;
+        }
+        
+        /* Enhanced Skills Visualization */
+        #skills-3d-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 16px;
+        }
+        
+        #sphere-container {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .skill-tag {
+            position: absolute;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 201, 71, 0.3);
+            border-radius: 24px;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #FFC947;
+            box-shadow: 0 0 15px rgba(255, 201, 71, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            z-index: 10;
+            transform: translate(-50%, -50%);
+        }
+        
+        .skill-tag:hover {
+            background: rgba(255, 201, 71, 0.15);
+            transform: translate(-50%, -50%) scale(1.1);
+            box-shadow: 0 0 25px rgba(255, 201, 71, 0.4);
+            z-index: 100;
+        }
+        
+        .active-skill {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(10, 10, 15, 0.9);
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid #FFC947;
+            z-index: 200;
+            width: 250px;
+            box-shadow: 0 0 20px rgba(255, 201, 71, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .active-skill h3 {
+            color: #FFC947;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            border-bottom: 2px solid #00BCD4;
+            padding-bottom: 8px;
+        }
+        
+        .active-skill .skill-level {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        
+        .active-skill .skill-level-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #FFC947, #FFD700);
+            border-radius: 4px;
+        }
+        
+        .skill-detail {
+            font-size: 0.9rem;
+            color: #E1F5FE;
+            margin-top: 8px;
+        }
+        
+        .glowing-dot {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #00BCD4;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00BCD4, 0 0 20px #00BCD4;
+        }
+        
+        /* Interests Section */
+        .interest-card {
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 201, 71, 0.1);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        
+        .interest-card:hover {
+            transform: translateY(-5px);
+            border-color: #FFC947;
+            box-shadow: 0 10px 25px rgba(255, 201, 71, 0.2);
+        }
+        
+        .interest-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #FFC947, #00BCD4);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        /* === NEW PROFILE PICTURE STYLES === */
+        .profile-container {
+            position: relative;
+            width: 320px;
+            height: 320px;
+            margin: 0 auto;
+            perspective: 1000px;
+        }
+        
+        .profile-card {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .profile-container:hover .profile-card {
+            transform: rotateY(5deg) rotateX(5deg) scale(1.03);
+        }
+        
+        .profile-frame {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(135deg, #0A0A0F, #121420);
+            border: 3px solid transparent;
+            background-clip: padding-box;
+        }
+        
+        .profile-image {
+            width: 90%;
+            height: 90%;
+            border-radius: 50%;
+            object-fit: cover;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+        }
+        
+        .holographic-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 30% 30%, rgba(255, 201, 71, 0.2), transparent 40%),
+                radial-gradient(circle at 70% 70%, rgba(0, 188, 212, 0.3), transparent 40%),
+                linear-gradient(45deg, 
+                    rgba(255, 201, 71, 0.1) 0%, 
+                    rgba(0, 188, 212, 0.2) 50%, 
+                    rgba(255, 201, 71, 0.1) 100%);
+            border-radius: 50%;
+            animation: profile-hologram 8s infinite linear;
+            opacity: 0.8;
+            mix-blend-mode: overlay;
+            z-index: 1;
+        }
+        
+        .tech-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: 
+                repeating-linear-gradient(0deg, 
+                    transparent, 
+                    transparent 20px, 
+                    rgba(0, 188, 212, 0.1) 20px, 
+                    rgba(0, 188, 212, 0.1) 21px),
+                repeating-linear-gradient(90deg, 
+                    transparent, 
+                    transparent 20px, 
+                    rgba(255, 201, 71, 0.1) 20px, 
+                    rgba(255, 201, 71, 0.1) 21px);
+            z-index: 0;
+            opacity: 0.7;
+        }
+        
+        .hex-border {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #FFC947, #00BCD4, #FFC947);
+            z-index: -1;
+            animation: profile-rotate 20s linear infinite;
+            filter: blur(10px);
+            opacity: 0.7;
+        }
+        
+        .floating-icons {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 3;
+        }
+        
+        .floating-icon {
+            position: absolute;
+            font-size: 1.8rem;
+            color: #00BCD4;
+            opacity: 0.8;
+            animation: profile-float 8s infinite ease-in-out;
+            text-shadow: 0 0 10px rgba(0, 188, 212, 0.7);
+        }
+        
+        .digital-signature {
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            background: linear-gradient(90deg, #FFC947, #00BCD4);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            white-space: nowrap;
+            text-shadow: 0 0 10px rgba(0, 188, 212, 0.3);
+            z-index: 10;
+        }
+        
+        .pulse-ring {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 201, 71, 0.3);
+            animation: profile-pulse 3s infinite ease-in-out;
+            z-index: -2;
+        }
+        
+        .pulse-ring:nth-child(2) {
+            animation-delay: 1s;
+            border-color: rgba(0, 188, 212, 0.3);
+        }
+        
+        .pulse-ring:nth-child(3) {
+            animation-delay: 2s;
+            border-color: rgba(255, 201, 71, 0.2);
+        }
+        
+        @keyframes profile-rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes profile-pulse {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.2); opacity: 0; }
+        }
+        
+        @keyframes profile-hologram {
+            0% {
+                background-position: 0% 0%;
+                opacity: 0.8;
+            }
+            50% {
+                opacity: 0.9;
+            }
+            100% {
+                background-position: 200% 200%;
+                opacity: 0.8;
+            }
+        }
+        
+        @keyframes profile-float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-20px) translateX(10px); }
+            50% { transform: translateY(-10px) translateX(-15px); }
+            75% { transform: translateY(15px) translateX(15px); }
+        }
+        
+        /* New Skill Bar Animation */
+        .skill-progress-animated {
+            position: absolute;
+            height: 100%;
+            border-radius: 4px;
+            background: linear-gradient(90deg, #FFC947, #FFD700);
+            animation: fillBar 1.5s ease-out forwards;
+        }
+        
+        @keyframes fillBar {
+            from { width: 0; }
+            to { width: var(--skill-level); }
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <section id="home"></section>
+    <!-- Loading Animation -->
+    <div id="loader" class="fixed inset-0 bg-black z-50 flex items-center justify-center">
+        <div class="text-center">
+            <div class="relative w-24 h-24 mx-auto mb-6">
+                <div class="absolute inset-0 border-4 border-secondary border-t-transparent rounded-full animate-spin"></div>
+                <div class="absolute inset-4 border-4 border-tertiary border-b-transparent rounded-full animate-spin-reverse"></div>
+            </div>
+            <h3 class="text-xl font-bold text-secondary">INITIALIZING PORTFOLIO MATRIX</h3>
+            <p class="text-gray-400 mt-2">Loading digital alchemy components...</p>
+            <div class="mt-4 w-64 h-1 bg-gray-800 rounded-full overflow-hidden mx-auto">
+                <div id="loader-progress" class="h-full bg-secondary" style="width: 0%"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WhatsApp Chat Bubble -->
+    <a href="https://wa.me/254746656248" class="chat-bubble">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- GitHub Floating Button -->
+    <a href="https://github.com/Jackal-l501" class="fixed bottom-180px right-30px z-50 w-60px h-60px bg-gray-900 rounded-full flex items-center justify-center shadow-lg hover:bg-black transition transform hover:scale-110">
+        <i class="fab fa-github text-2xl text-white"></i>
+    </a>
+
+    <!-- Scroll Progress -->
+    <div class="fixed top-0 left-0 right-0 h-1 z-50">
+        <div id="scroll-progress" class="h-full bg-gradient-to-r from-secondary to-tertiary" style="width: 0%"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-40 glass border-b border-gray-800 py-3">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <a href="#" class="text-2xl font-bold text-secondary">JOHN<span class="text-accent">OJANGO</span></a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#" class="text-gray-300 hover:text-secondary transition flex items-center group relative" data-section="home">
+                        <div class="w-2 h-2 bg-secondary rounded-full mr-2 animate-pulse"></div>
+                        <span class="group-hover:text-secondary">Home</span>
+                    </a>
+                    <a href="#portfolio" class="text-gray-300 hover:text-secondary transition flex items-center group relative" data-section="work">
+                        <div class="w-2 h-2 bg-secondary rounded-full mr-2 animate-pulse"></div>
+                        <span class="group-hover:text-secondary">Work</span>
+                    </a>
+                    <a href="#services" class="text-gray-300 hover:text-secondary transition flex items-center group relative" data-section="services">
+                        <div class="w-2 h-2 bg-secondary rounded-full mr-2 animate-pulse"></div>
+                        <span class="group-hover:text-secondary">Services</span>
+                    </a>
+                    <a href="#contact" class="text-gray-300 hover:text-secondary transition flex items-center group relative" data-section="contact">
+                        <div class="w-2 h-2 bg-secondary rounded-full mr-2 animate-pulse"></div>
+                        <span class="group-hover:text-secondary">Contact</span>
+                    </a>
+                    <a href="#about" class="text-gray-300 hover:text-secondary transition flex items-center group relative" data-section="about">
+                        <div class="w-2 h-2 bg-secondary rounded-full mr-2 animate-pulse"></div>
+                        <span class="group-hover:text-secondary">About</span>
+                    </a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-gray-300 hover:text-secondary focus:outline-none">
+                        <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden glass border-t border-gray-800">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#" class="block px-3 py-2 text-gray-300 hover:text-secondary flex items-center rounded-lg hover:bg-gray-800">
+                    <div class="w-2 h-2 bg-secondary rounded-full mr-2 animate-pulse"></div>
+                    Home
+                </a>
+                <a href="#portfolio" class="block px-3 py-2 text-gray-300 hover:text-secondary flex items-center rounded-lg hover:bg-gray-800">
+                    <div class="w-2 h-2 bg-secondary rounded-full mr-2 animate-pulse"></div>
+                    Work
+                </a>
+                <a href="#services" class="block px-3 py-2 text-gray-300 hover:text-secondary flex items-center rounded-lg hover:bg-gray-800">
+                    <div class="w-2 h-2 bg-secondary rounded-full mr-2 animate-pulse"></div>
+                    Services
+                </a>
+                <a href="#contact" class="block px-3 py-2 text-gray-300 hover:text-secondary flex items-center rounded-lg hover:bg-gray-800">
+                    <div class="w-2 h-2 bg-secondary rounded-full mr-2 animate-pulse"></div>
+                    Contact
+                </a>
+                <a href="#about" class="block px-3 py-2 text-gray-300 hover:text-secondary flex items-center rounded-lg hover:bg-gray-800">
+                    <div class="w-2 h-2 bg-secondary rounded-full mr-2 animate-pulse"></div>
+                    About
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h1 class="text-4xl md:text-6xl font-bold mb-6">
+                        <span class="text-accent">Hi, I'm </span>
+                        <span class="golden-gradient">John Ojango</span>
+                    </h1>
+                    <h2 class="text-2xl md:text-3xl font-medium mb-6 text-gray-300">
+                        <span class="cyan-gradient neon-text">Digital Alchemist</span> transforming ideas into golden opportunities
+                    </h2>
+                    <p class="text-lg text-gray-400 mb-8 max-w-lg">
+                        Multidisciplinary professional blending finance, technology, and design to create impactful digital solutions for businesses and NGOs.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#contact" class="px-8 py-3 bg-gradient-to-r from-secondary to-yellow-500 text-black font-bold rounded-full hover:from-yellow-500 hover:to-secondary transition transform hover:scale-105 shadow-lg shadow-yellow-500/20">
+                            Get In Touch
+                        </a>
+                        <a href="#portfolio" class="px-8 py-3 border border-secondary text-white font-bold rounded-full hover:bg-gray-900 transition transform hover:scale-105">
+                            View My Work
+                        </a>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="profile-container">
+                        <div class="profile-card">
+                            <div class="profile-frame">
+                                <div class="tech-grid"></div>
+                                <div class="holographic-overlay"></div>
+                                <img src="My Picture/My Image.jpg" 
+                                    alt="John Ojango" 
+                                    class="profile-image">
+                                <div class="floating-icons">
+                                    <div class="floating-icon" style="top: 15%; left: 20%; animation-delay: 0s;">
+                                        <i class="fas fa-microchip"></i>
+                                    </div>
+                                    <div class="floating-icon" style="top: 70%; left: 80%; animation-delay: 1s;">
+                                        <i class="fas fa-atom"></i>
+                                    </div>
+                                    <div class="floating-icon" style="top: 40%; left: 10%; animation-delay: 2s;">
+                                        <i class="fas fa-brain"></i>
+                                    </div>
+                                    <div class="floating-icon" style="top: 85%; left: 40%; animation-delay: 3s;">
+                                        <i class="fas fa-code"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hex-border"></div>
+                            <div class="pulse-ring"></div>
+                            <div class="pulse-ring"></div>
+                            <div class="pulse-ring"></div>
+                        </div>
+                        
+                        <div class="digital-signature">JOHN OJANGO | DIGITAL ALCHEMIST</div>
+                    </div>
+                    
+                    <div class="absolute -bottom-6 -left-6 w-16 h-16 rounded-full bg-secondary bg-opacity-20 blur-md animate-float"></div>
+                    <div class="absolute -top-6 -right-6 w-20 h-20 rounded-full bg-tertiary bg-opacity-20 blur-md animate-float animation-delay-2000"></div>
+                    <div class="absolute -top-10 left-1/4 w-12 h-12 rounded-full bg-secondary bg-opacity-15 blur-md animate-float animation-delay-3000"></div>
+                </div>
+            </div>
+
+            <!-- Enhanced 3D Skills Visualization -->
+            <div class="mt-20 text-center">
+                <h3 class="text-2xl font-bold text-white mb-8 section-header">
+                    <span class="golden-gradient">Skills in 3D</span>
+                </h3>
+                <div class="w-full h-96 relative rounded-2xl overflow-hidden glass" id="skills-3d-container">
+                    <div id="sphere-container"></div>
+                    <div id="active-skill" class="active-skill hidden">
+                        <h3 class="skill-name">Web Design</h3>
+                        <p class="text-gray-300 skill-desc">Creating stunning user interfaces</p>
+                        <div class="skill-level">
+                            <div class="skill-level-bar" style="width: 95%"></div>
+                        </div>
+                        <div class="text-tertiary mt-2">95%</div>
+                        <div class="skill-detail">Modern, responsive designs with intuitive UX</div>
+                    </div>
+                </div>
+                <p class="text-gray-400 mt-4">Hover over skills to see details - Drag to rotate the sphere</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-16 bg-gradient-to-b from-dark to-primary">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="glass p-8 rounded-2xl border border-gray-800 hover:border-secondary transition transform hover:-translate-y-2">
+                    <div class="text-4xl font-bold text-secondary mb-2">7+</div>
+                    <div class="text-gray-400">Websites Built</div>
+                </div>
+                <div class="glass p-8 rounded-2xl border border-gray-800 hover:border-secondary transition transform hover:-translate-y-2">
+                    <div class="text-4xl font-bold text-secondary mb-2">250+</div>
+                    <div class="text-gray-400">Design Projects</div>
+                </div>
+                <div class="glass p-8 rounded-2xl border border-gray-800 hover:border-secondary transition transform hover:-translate-y-2">
+                    <div class="text-4xl font-bold text-tertiary mb-2">96.5%</div>
+                    <div class="text-gray-400">Client Satisfaction</div>
+                </div>
+                <div class="glass p-8 rounded-2xl border border-gray-800 hover:border-secondary transition transform hover:-translate-y-2">
+                    <div class="text-4xl font-bold text-secondary mb-2">5+</div>
+                    <div class="text-gray-400">Years Experience</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section - Enhanced with Finance Emphasis -->
+    <section id="about" class="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 section-header">
+                    <span class="golden-gradient">About Me</span>
+                </h2>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="glass p-10 rounded-3xl">
+                    <h3 class="text-2xl font-bold text-white mb-6">Who Am I?</h3>
+                    <p class="text-gray-400 mb-6">
+                        I'm a multidisciplinary professional with a solid foundation in finance, nonprofit leadership, and a fast-rising career in tech and digital transformation. My work spans across web design, web development, software engineering, and digital branding.
+                    </p>
+                    <p class="text-gray-400 mb-6">
+                        With a strong background in financial analysis and strategy, I bring a unique perspective to technology projects, ensuring solutions are not just technically sound but also financially viable and strategically aligned with business goals.
+                    </p>
+                    <p class="text-gray-400 mb-6">
+                        From building websites for NGOs and SMEs to designing powerful interfaces and developing custom web-based software solutions, I combine technical excellence with a passion for community impact and business growth. I'm also the Founder & CEO of OmniCore Solutions - a multidisciplinary service provider delivering innovative solutions across technology, business consulting, branding, and digital marketing.
+                    </p>
+                    <div class="flex flex-wrap gap-4 mt-8">
+                        <div class="flex items-center glass px-4 py-2 rounded-full">
+                            <div class="w-3 h-3 bg-secondary mr-2 rounded-full animate-pulse"></div>
+                            <span class="text-gray-300">Web Design</span>
+                        </div>
+                        <div class="flex items-center glass px-4 py-2 rounded-full">
+                            <div class="w-3 h-3 bg-secondary mr-2 rounded-full animate-pulse"></div>
+                            <span class="text-gray-300">Web Development</span>
+                        </div>
+                        <div class="flex items-center glass px-4 py-2 rounded-full">
+                            <div class="w-3 h-3 bg-tertiary mr-2 rounded-full animate-pulse"></div>
+                            <span class="text-gray-300">Software Engineering</span>
+                        </div>
+                        <div class="flex items-center glass px-4 py-2 rounded-full">
+                            <div class="w-3 h-3 bg-secondary mr-2 rounded-full animate-pulse"></div>
+                            <span class="text-gray-300">Financial Strategy</span>
+                        </div>
+                        <div class="flex items-center glass px-4 py-2 rounded-full">
+                            <div class="w-3 h-3 bg-tertiary mr-2 rounded-full animate-pulse"></div>
+                            <span class="text-gray-300">Professional Editing</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass p-10 rounded-3xl">
+                    <h3 class="text-2xl font-bold text-white mb-6">My Skills</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-300">Financial Analysis</span>
+                                <span class="text-secondary">92%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress-animated" style="--skill-level:92%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-300">Web Design</span>
+                                <span class="text-secondary">95%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress-animated" style="--skill-level:95%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-300">Professional Editing</span>
+                                <span class="text-tertiary">90%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress-animated" style="--skill-level:90%; background: linear-gradient(90deg, #00BCD4, #4DD0E1);"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-300">Frontend Development</span>
+                                <span class="text-secondary">90%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress-animated" style="--skill-level:90%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-300">Backend Development</span>
+                                <span class="text-tertiary">%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress-animated" style="--skill-level:85%; background: linear-gradient(90deg, #00BCD4, #4DD0E1);"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-300">Project Management</span>
+                                <span class="text-secondary">88%</span>
+                            </div>
+                            <div class="skill-bar">
+                                <div class="skill-progress-animated" style="--skill-level:88%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interests Section - Enhanced with Design/Editing -->
+    <section id="interests" class="py-20 bg-gradient-to-b from-primary to-dark relative overflow-hidden">
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 section-header">
+                    <span class="golden-gradient">My Professional Interests</span>
+                </h2>
+                <p class="text-gray-400 mt-6 max-w-2xl mx-auto">
+                    Areas that fuel my passion and drive my professional growth
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="interest-card glass p-8 rounded-2xl">
+                    <div class="text-center">
+                        <div class="interest-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-4">FinTech Innovation</h3>
+                        <p class="text-gray-400">
+                            Exploring how technology can revolutionize financial services, improve accessibility, and create economic empowerment.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="interest-card glass p-8 rounded-2xl">
+                    <div class="text-center">
+                        <div class="interest-icon">
+                            <i class="fas fa-paint-brush"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-4">Professional Design & Editing</h3>
+                        <p class="text-gray-400">
+                            Creating visually compelling designs and polished content for professional communications and marketing.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="interest-card glass p-8 rounded-2xl">
+                    <div class="text-center">
+                        <div class="interest-icon">
+                            <i class="fas fa-hands-helping"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-4">Nonprofit Development</h3>
+                        <p class="text-gray-400">
+                            Creating sustainable digital solutions that empower NGOs to maximize their community impact and operational efficiency.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="interest-card glass p-8 rounded-2xl">
+                    <div class="text-center">
+                        <div class="interest-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-4">AI in Business</h3>
+                        <p class="text-gray-400">
+                            Implementing artificial intelligence to solve complex business challenges and create competitive advantages.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="interest-card glass p-8 rounded-2xl">
+                    <div class="text-center">
+                        <div class="interest-icon">
+                            <i class="fas fa-globe-africa"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-4">Digital Transformation</h3>
+                        <p class="text-gray-400">
+                            Helping SMEs leverage technology to optimize operations, reach new markets, and drive sustainable growth.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="interest-card glass p-8 rounded-2xl">
+                    <div class="text-center">
+                        <div class="interest-icon">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-4">Financial Strategy</h3>
+                        <p class="text-gray-400">
+                            Developing robust financial models and strategies that drive business growth and sustainability.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section - Enhanced with Design/Editing -->
+    <section id="services" class="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-primary to-dark relative overflow-hidden">
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 section-header">
+                    <span class="golden-gradient">What I Do</span>
+                </h2>
+            </div>
+            
+            <!-- Featured Project -->
+            <div class="featured-project mb-16 glass rounded-3xl overflow-hidden border border-gray-800 hover:border-secondary transition-all duration-500">
+                <div class="md:flex">
+                    <div class="md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
+                        <div class="inline-block px-4 py-1 bg-secondary/10 text-secondary rounded-full text-sm font-bold mb-4">Featured Project</div>
+                        <h3 class="text-2xl font-bold text-white mb-4">Nexus Horizon AI Platform</h3>
+                        <p class="text-gray-400 mb-6">Next-generation AI integration platform with neural network capabilities and real-time data processing.</p>
+                        <div class="flex flex-wrap gap-3 mb-6">
+                            <span class="px-3 py-1 bg-gray-800 text-secondary text-sm rounded-full">React</span>
+                            <span class="px-3 py-1 bg-gray-800 text-tertiary text-sm rounded-full">TensorFlow.js</span>
+                            <span class="px-3 py-1 bg-gray-800 text-secondary text-sm rounded-full">Node.js</span>
+                            <span class="px-3 py-1 bg-gray-800 text-tertiary text-sm rounded-full">Three.js</span>
+                        </div>
+                        <a href="Nexus Horizon AI Platform Case Study.html" class="inline-flex items-center text-secondary font-medium hover:text-yellow-400 transition group">
+                            View Case Study 
+                            <span class="ml-3 inline-flex items-center justify-center w-8 h-8 bg-yellow-400/20 rounded-full group-hover:bg-yellow-400/40 transition-all">
+                                <i class="fas fa-arrow-right text-yellow-400 text-xl group-hover:text-yellow-300 group-hover:scale-125 transition-transform"></i>
+                            </span>
+                        </a>
+                    </div>
+                    <div class="md:w-1/2 h-80 md:h-auto bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
+                             alt="Featured Project" 
+                             class="absolute inset-0 w-full h-full object-cover opacity-40">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/80 z-10"></div>
+                        <div class="relative z-20 text-center p-6">
+                            <div class="w-16 h-16 mx-auto mb-4 bg-secondary/20 rounded-full flex items-center justify-center text-3xl text-secondary">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <h4 class="text-xl font-bold text-white mb-2">AI-Powered</h4>
+                            <p class="text-gray-300">Machine Learning Integration</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projects Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="glass p-8 rounded-2xl border border-gray-800 hover:border-secondary transition project-card">
+                    <div class="text-secondary text-4xl mb-6">
+                        <i class="fas fa-paint-brush"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">Web Design</h3>
+                    <p class="text-gray-400">
+                        Modern, user-friendly designs using Canva, Figma, and Adobe XD. Wireframing, UI/UX mockups, branding kits with mobile responsiveness and visual storytelling.
+                    </p>
+                </div>
+                <div class="glass p-8 rounded-2xl border border-gray-800 hover:border-tertiary transition project-card">
+                    <div class="text-tertiary text-4xl mb-6">
+                        <i class="fas fa-edit"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">Professional Editing</h3>
+                    <p class="text-gray-400">
+                        High-quality editing services for documents, presentations, and marketing materials with a focus on clarity, professionalism, and visual appeal.
+                    </p>
+                </div>
+                <div class="glass p-8 rounded-2xl border border-gray-800 hover:border-secondary transition project-card">
+                    <div class="text-secondary text-4xl mb-6">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">Financial Consulting</h3>
+                    <p class="text-gray-400">
+                        Strategic financial planning, analysis, and consulting services to help businesses optimize their financial performance and growth strategies.
+                    </p>
+                </div>
+                <div class="glass p-8 rounded-2xl border border-gray-800 hover:border-tertiary transition project-card">
+                    <div class="text-tertiary text-4xl mb-6">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">Web Development</h3>
+                    <p class="text-gray-400">
+                        Full-site builds using HTML, CSS, JavaScript, React.js. CMS-based sites: WordPress, Wix, Webflow with domain setup, SEO, email integration.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section - Expanded with new items -->
+    <section id="portfolio" class="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 section-header">
+                    <span class="golden-gradient">My Portfolio</span>
+                </h2>
+                <p class="text-gray-400 mt-6 max-w-2xl mx-auto">
+                    A selection of my recent projects showcasing my diverse skills in finance, design, and development.
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="project-card glass rounded-2xl overflow-hidden border border-gray-800 transition-all duration-500 group relative">
+                    <div class="absolute inset-0 bg-gradient-to-br from-secondary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div class="h-48 bg-gradient-to-r from-gray-800 to-gray-700 flex items-center justify-center">
+                        <img src="https://beyond-support.org/wp-content/uploads/photo-gallery/IMG_2896-13.jpg?bwg=1685702342" alt="Web Design" class="w-full h-full object-cover opacity-70">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-white mb-2">Beyond Support Foundation</h3>
+                        <p class="text-gray-400 mb-4">Website development with financial reporting system</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-gray-800 text-secondary text-sm rounded-full">WordPress</span>
+                            <span class="px-3 py-1 bg-gray-800 text-secondary text-sm rounded-full">PHP</span>
+                            <span class="px-3 py-1 bg-gray-800 text-tertiary text-sm rounded-full">MySQL</span>
+                        </div>
+                    </div>
+                    <a href="https://beyond-support.org/" class="absolute inset-0 z-10"></a>
+                </div>
+                <div class="project-card glass rounded-2xl overflow-hidden border border-gray-800 transition duration-500">
+                    <div class="h-48 bg-gradient-to-r from-gray-800 to-gray-700 flex items-center justify-center">
+                        <img src="E-Commerce image/Firefly_E- E-Commerce store online marketing digital technology concept 768852.jpg" alt="E-commerce Store" class="w-full h-full object-cover opacity-70">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-white mb-2">E-commerce Store</h3>
+                        <p class="text-gray-400 mb-4">Custom WooCommerce solution with inventory management</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-gray-800 text-secondary text-sm rounded-full">WooCommerce</span>
+                            <span class="px-3 py-1 bg-gray-800 text-tertiary text-sm rounded-full">JavaScript</span>
+                            <span class="px-3 py-1 bg-gray-800 text-secondary text-sm rounded-full">CSS</span>
+                        </div>
+                    </div>
+                    <a href="https://github.com/Jackal-l501" class="absolute inset-0 z-10"></a>
+                </div>
+                <div class="project-card glass rounded-2xl overflow-hidden border border-gray-800 transition duration-500">
+                    <div class="h-48 bg-gradient-to-r from-gray-800 to-gray-700 flex items-center justify-center">
+                        <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="Mobile App" class="w-full h-full object-cover opacity-70">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-white mb-2">Mobile App UI/UX</h3>
+                        <p class="text-gray-400 mb-4">Financial management app interface design</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-gray-800 text-tertiary text-sm rounded-full">Figma</span>
+                            <span class="px-3 py-1 bg-gray-800 text-secondary text-sm rounded-full">Adobe XD</span>
+                            <span class="px-3 py-1 bg-gray-800 text-tertiary text-sm rounded-full">UI/UX</span>
+                        </div>
+                    </div>
+                    <a href="https://github.com/Jackal-l501" class="absolute inset-0 z-10"></a>
+                </div>
+                <!-- New Portfolio Items -->
+                <div class="project-card glass rounded-2xl overflow-hidden border border-gray-800 transition duration-500">
+                    <div class="h-48 bg-gradient-to-r from-gray-800 to-gray-700 flex items-center justify-center">
+                        <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1011&q=80" alt="Financial Dashboard" class="w-full h-full object-cover opacity-70">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-white mb-2">Financial Dashboard</h3>
+                        <p class="text-gray-400 mb-4">Interactive dashboard for financial analytics</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-gray-800 text-secondary text-sm rounded-full">DataViz</span>
+                            <span class="px-3 py-1 bg-gray-800 text-tertiary text-sm rounded-full">React</span>
+                            <span class="px-3 py-1 bg-gray-800 text-secondary text-sm rounded-full">Chart.js</span>
+                        </div>
+                    </div>
+                    <a href="https://github.com/Jackal-l501" class="absolute inset-0 z-10"></a>
+                </div>
+                <div class="project-card glass rounded-2xl overflow-hidden border border-gray-800 transition duration-500">
+                    <div class="h-48 bg-gradient-to-r from-gray-800 to-gray-700 flex items-center justify-center">
+                        <img src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1169&q=80" alt="Branding Package" class="w-full h-full object-cover opacity-70">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-white mb-2">Brand Identity Package</h3>
+                        <p class="text-gray-400 mb-4">Complete branding solution for tech startup</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-gray-800 text-tertiary text-sm rounded-full">Illustrator</span>
+                            <span class="px-3 py-1 bg-gray-800 text-secondary text-sm rounded-full">Photoshop</span>
+                            <span class="px-3 py-1 bg-gray-800 text-tertiary text-sm rounded-full">Branding</span>
+                        </div>
+                    </div>
+                    <a href="https://github.com/Jackal-l501" class="absolute inset-0 z-10"></a>
+                </div>
+            </div>
+            
+            <!-- Education & Certifications Section - Updated with PLP -->
+            <section id="education-certifications" class="mt-20 glass p-10 rounded-3xl">
+                <h3 class="text-2xl font-bold text-white mb-8 section-header">
+                    <span class="golden-gradient">Education & Certifications</span>
+                </h3>
+                
+                <div class="grid md:grid-cols-2 gap-10">
+                    <!-- Education Column -->
+                    <div>
+                        <h4 class="text-xl font-bold text-secondary mb-6 flex items-center">
+                            <i class="fas fa-graduation-cap mr-3"></i> Education
+                        </h4>
+                        <div class="space-y-6">
+                            <div class="pl-6 border-l-2 border-secondary">
+                                <div class="text-tertiary font-bold">2025</div>
+                                <h5 class="text-lg font-bold text-white">Core Humanitarian Certification</h5>
+                                <p class="text-gray-400">Disaster Ready Organization | USA | Online</p>
+                            </div>
+                            <div class="pl-6 border-l-2 border-secondary">
+                                <div class="text-tertiary font-bold">2024</div>
+                                <h5 class="text-lg font-bold text-white">QuickBooks Online Accountant Certification</h5>
+                                <p class="text-gray-400">QuickBooks/Intuit - Virtual</p>
+                            </div>
+                            <div class="pl-6 border-l-2 border-secondary">
+                                <div class="text-tertiary font-bold">2024</div>
+                                <h5 class="text-lg font-bold text-white">Project Management Profession Certification</h5>
+                                <p class="text-gray-400">Simplilearn | India | Online</p>
+                            </div>
+                            <div class="pl-6 border-l-2 border-secondary">
+                                <div class="text-tertiary font-bold">2025-Present</div>
+                                <h5 class="text-lg font-bold text-white">Software Engineering</h5>
+                                <p class="text-gray-400">Power Learn Project (Enrolled July 10th)</p>
+                            </div>
+                            <div class="pl-6 border-l-2 border-secondary">
+                                <div class="text-tertiary font-bold">2022-Present</div>
+                                <h5 class="text-lg font-bold text-white">BSc Finance (Awaiting Graduation)</h5>
+                                <p class="text-gray-400">Cooperative University of Kenya</p>
+                            </div>
+                            <div class="pl-6 border-l-2 border-secondary">
+                                <div class="text-tertiary font-bold">2022</div>
+                                <h5 class="text-lg font-bold text-white">Diploma in Banking & Finance (Credit)</h5>
+                                <p class="text-gray-400">Cooperative University of Kenya</p>
+                            </div>
+                            <div class="pl-6 border-l-2 border-secondary">
+                                <div class="text-tertiary font-bold">2019</div>
+                                <h5 class="text-lg font-bold text-white">Kenya Certificate of Secondary Education</h5>
+                                <p class="text-gray-400">Mikuini High School | AGP: 43</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Certifications Column -->
+                    <div>
+                        <h4 class="text-xl font-bold text-tertiary mb-6 flex items-center">
+                            <i class="fas fa-certificate mr-3"></i> Certifications
+                        </h4>
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <i class="fas fa-award text-secondary mt-1 mr-3"></i>
+                                <div>
+                                    <h5 class="font-bold text-white">Canva Milestones</h5>
+                                    <p class="text-gray-400">200 Designs & 50 Designs by Canva Team</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-certificate text-secondary mt-1 mr-3"></i>
+                                <div>
+                                    <h5 class="font-bold text-white">Canva Essentials Certification</h5>
+                                    <p class="text-gray-400">Canva Design School (Dec 2024)</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-certificate text-secondary mt-1 mr-3"></i>
+                                <div>
+                                    <h5 class="font-bold text-white">Graphic Design Essentials</h5>
+                                    <p class="text-gray-400">Canva Design School (Dec 2024)</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-robot text-secondary mt-1 mr-3"></i>
+                                <div>
+                                    <h5 class="font-bold text-white">GenAI & Productivity Masterclass</h5>
+                                    <p class="text-gray-400">Simplilearn (Mar 2025)</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-chart-line text-secondary mt-1 mr-3"></i>
+                                <div>
+                                    <h5 class="font-bold text-white">Business Analytics with Excel</h5>
+                                    <p class="text-gray-400">Microsoft via Simplilearn (Mar 2025)</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-plane text-secondary mt-1 mr-3"></i>
+                                <div>
+                                    <h5 class="font-bold text-white">Travel Manager Certification</h5>
+                                    <p class="text-gray-400">Mindtickle (Jun 2025)</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-laptop-code text-secondary mt-1 mr-3"></i>
+                                <div>
+                                    <h5 class="font-bold text-white">Certificate in Computer Studies</h5>
+                                    <p class="text-gray-400">Wisdom College (Nov 2019)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-16">
+                <a href="https://ojangojohn6.wixsite.com/omnicore-solutions/portfolio" class="px-8 py-3 border border-secondary text-white font-bold rounded-full hover:bg-gray-900 transition inline-flex items-center transform hover:scale-105">
+                    View All Projects <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-dark to-primary relative overflow-hidden">
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 section-header">
+                    <span class="golden-gradient">My Journey</span>
+                </h2>
+            </div>
+            
+            <div class="relative">
+                <!-- Timeline line -->
+                <div class="hidden md:block absolute left-1/2 h-full w-0.5 bg-gradient-to-b from-secondary to-tertiary"></div>
+                
+                <!-- Timeline items -->
+                <div class="space-y-12">
+                    <!-- Item 0 -->
+                    <div class="relative md:grid md:grid-cols-2 gap-8">
+                        <div class="md:text-right md:pr-12 pb-8 md:pb-0 order-last md:order-first">
+                            <div class="text-secondary font-bold">2020 - Present</div>
+                            <h3 class="text-xl font-bold text-white">Founder & CEO</h3>
+                            <div class="text-gray-400">OmniCore Solutions</div>
+                        </div>
+                        <div class="md:pl-12 md:border-l md:border-gray-700 timeline-item glass p-6 rounded-2xl">
+                            <p class="text-gray-400">
+                                Leading a multidisciplinary service provider delivering innovative solutions across technology, business consulting, branding, and digital marketing. We've served 450+ daily customers with 30+ brand collaborations and 130+ influencer endorsements.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Item 1 -->
+                    <div class="relative md:grid md:grid-cols-2 gap-8">
+                        <div class="md:text-right md:pr-12 pb-8 md:pb-0">
+                            <div class="text-tertiary font-bold">Jul 2023 - Present</div>
+                            <h3 class="text-xl font-bold text-white">Project Manager / CFO</h3>
+                            <div class="text-gray-400">Beyond Support Foundation</div>
+                        </div>
+                        <div class="md:pl-12 md:border-l md:border-gray-700 timeline-item glass p-6 rounded-2xl">
+                            <p class="text-gray-400">
+                                Led project planning, budgeting, stakeholder engagement, and donor communications. Reduced expenses, improved team productivity, and implemented financial risk controls.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Item 2 -->
+                    <div class="relative md:grid md:grid-cols-2 gap-8">
+                        <div class="md:text-right md:pr-12 pb-8 md:pb-0 order-last md:order-first">
+                            <div class="text-secondary font-bold">Feb 2020 - Present</div>
+                            <h3 class="text-xl font-bold text-white">Freelancer</h3>
+                            <div class="text-gray-400">Digital Consultant & Designer</div>
+                        </div>
+                        <div class="md:pl-12 md:border-l md:border-gray-700 timeline-item glass p-6 rounded-2xl">
+                            <p class="text-gray-400">
+                                Delivered 250+ design projects and 7+ websites. Specialized in Canva, Adobe Suite, branding, and e-commerce support for various clients.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Item 3 -->
+                    <div class="relative md:grid md:grid-cols-2 gap-8">
+                        <div class="md:text-right md:pr-12 pb-8 md:pb-0">
+                            <div class="text-tertiary font-bold">Mar 2023 - Jan 2024</div>
+                            <h3 class="text-xl font-bold text-white">Station Administrator</h3>
+                            <div class="text-gray-400">Scanned Document Systems</div>
+                        </div>
+                        <div class="md:pl-12 md:border-l md:border-gray-700 timeline-item glass p-6 rounded-2xl">
+                            <p class="text-gray-400">
+                                Managed cyber café operations, staff training, inventory, and marketing strategies for document processing services.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Item 4 -->
+                    <div class="relative md:grid md:grid-cols-2 gap-8">
+                        <div class="md:text-right md:pr-12 pb-8 md:pb-0 order-last md:order-first">
+                            <div class="text-secondary font-bold">Feb 2022 - May 2022</div>
+                            <h3 class="text-xl font-bold text-white">Finance Officer</h3>
+                            <div class="text-gray-400">Ministry of Gender</div>
+                        </div>
+                        <div class="md:pl-12 md:border-l md:border-gray-700 timeline-item glass p-6 rounded-2xl">
+                            <p class="text-gray-400">
+                                Budget preparation, financial reporting, forecasting, and inter-agency coordination for government programs.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-16 text-center">
+                <a href="My CV/John Omondi Ojango CV.pdf" class="px-8 py-3 bg-gradient-to-r from-secondary to-yellow-500 text-black font-bold rounded-full hover:from-yellow-500 hover:to-secondary transition inline-flex items-center transform hover:scale-105 shadow-lg shadow-yellow-500/20">
+                    Download Full CV <i class="ml-2 fas fa-file-download"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-primary to-dark relative overflow-hidden">
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 section-header">
+                    <span class="golden-gradient">Get In Touch</span>
+                </h2>
+                <p class="text-gray-400 mt-6 max-w-2xl mx-auto">
+                    Have a project in mind or want to discuss potential opportunities? I'd love to hear from you!
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-12">
+                <div>
+                    <div class="glass p-10 rounded-3xl">
+                        <h3 class="text-2xl font-bold text-white mb-6">Contact Information</h3>
+                        
+                        <div class="space-y-6">
+                            <div class="flex items-start">
+                                <div class="text-secondary text-xl mr-4 mt-1">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white">Location</h4>
+                                    <p class="text-gray-400">Nairobi, Kenya</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="text-secondary text-xl mr-4 mt-1">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white">Email</h4>
+                                    <p class="text-gray-400">ojangojohn6@gmail.com</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="text-tertiary text-xl mr-4 mt-1">
+                                    <i class="fas fa-phone-alt"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white">Phone</h4>
+                                    <p class="text-gray-400">+254 746 656 248</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="text-secondary text-xl mr-4 mt-1">
+                                    <i class="fas fa-globe"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white">Portfolio</h4>
+                                    <p class="text-gray-400">macaly-hmqud9raq07o7e4pxjtko7id.macaly-app.com</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="text-tertiary text-xl mr-4 mt-1">
+                                    <i class="fas fa-building"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white">Company</h4>
+                                    <p class="text-gray-400">OmniCore Solutions</p>
+                                    <p class="text-gray-400">solutionsomnicore@gmail.com</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-10">
+                            <h4 class="font-bold text-white mb-4">Connect With Me</h4>
+                            <div class="flex space-x-4">
+                                <a href="https://www.linkedin.com/in/john-ojango-b7171522b" class="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center text-secondary hover:bg-secondary hover:text-black transition transform hover:scale-110">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                                <a href="https://x.com/OjangoJohn" class="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center text-secondary hover:bg-secondary hover:text-black transition transform hover:scale-110">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                                <a href="https://www.instagram.com/john_omondi_oj" class="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center text-secondary hover:bg-secondary hover:text-black transition transform hover:scale-110">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                                <a href="https://www.facebook.com/profile.php?id=100090916194218" class="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center text-secondary hover:bg-secondary hover:text-black transition transform hover:scale-110">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="glass p-10 rounded-3xl">
+                        <form id="contact-form" class="space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="name" class="block text-gray-300 mb-2">Your Name</label>
+                                    <input type="text" id="name" name="name" class="w-full px-4 py-3 bg-gray-900 border border-gray-800 rounded-lg focus:outline-none focus:border-secondary text-white" required>
+                                </div>
+                                <div>
+                                    <label for="email" class="block text-gray-300 mb-2">Your Email</label>
+                                    <input type="email" id="email" name="email" class="w-full px-4 py-3 bg-gray-900 border border-gray-800 rounded-lg focus:outline-none focus:border-secondary text-white" required>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="subject" class="block text-gray-300 mb-2">Subject</label>
+                                <input type="text" id="subject" name="subject" class="w-full px-4 py-3 bg-gray-900 border border-gray-800 rounded-lg focus:outline-none focus:border-secondary text-white" required>
+                            </div>
+                            <div>
+                                <label for="message" class="block text-gray-300 mb-2">Message</label>
+                                <textarea id="message" name="message" rows="5" class="w-full px-4 py-3 bg-gray-900 border border-gray-800 rounded-lg focus:outline-none focus:border-secondary text-white" required></textarea>
+                            </div>
+                            <button type="submit" class="px-8 py-3 bg-gradient-to-r from-secondary to-yellow-500 text-black font-bold rounded-full hover:from-yellow-500 hover:to-secondary transition w-full transform hover:scale-105 shadow-lg shadow-yellow-500/20">
+                                Send Message <i class="fas fa-paper-plane ml-2"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- UPDATED FOOTER TO MATCH NEXUS HORIZON AI PLATFORM -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3 class="footer-title">John Ojango</h3>
+                    <p style="color: #E1F5FE; margin-bottom: 20px;">Digital Alchemist transforming ideas into golden opportunities</p>
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/john_omondi_oj?igsh=MTd2dDFtZDBjeWtxdg==" class="social-link" target="_blank">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://www.facebook.com/share/169K4TCL5h/" class="social-link" target="_blank">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://x.com/OjangoJohn?t=CBtRP10d-FO34E8AxmJ65w&s=09" class="social-link" target="_blank">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/john-ojango-b7171522b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" class="social-link" target="_blank">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3 class="footer-title">Navigation</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
+                        <li><a href="#about"><i class="fas fa-user"></i> About</a></li>
+                        <li><a href="#interests"><i class="fas fa-heart"></i> Interests</a></li>
+                        <li><a href="#services"><i class="fas fa-briefcase"></i> Work</a></li>
+                        <li><a href="#services"><i class="fas fa-cogs"></i> Services</a></li>
+                        <li><a href="#portfolio"><i class="fas fa-briefcase"></i> Portfolio</a></li>
+                        <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3 class="footer-title">Contact</h3>
+                    <ul class="footer-links">
+                        <li><a href="mailto:ojangojohn6@gmail.com"><i class="fas fa-envelope"></i> ojangojohn6@gmail.com</a></li>
+                        <li><a href="tel:+254746656248"><i class="fas fa-phone"></i> +254 746 656 248</a></li>
+                        <li><i class="fas fa-map-marker-alt"></i> Nairobi, Kenya</li>
+                        <li><a href="https://www.facebook.com/share/1Eok8jaJ3G/" class="charity-link" target="_blank"><i class="fas fa-hands-helping"></i> My Charity Work</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 John Ojango. All Rights Reserved. | Digital Alchemist</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Particle Background -->
+    <div class="particles" id="particles"></div>
+
+    <script>
+        // Improved loading animation
+        let progress = 0;
+        const loaderInterval = setInterval(() => {
+            progress += 2;
+            document.getElementById('loader-progress').style.width = `${progress}%`;
+            if (progress >= 100) {
+                clearInterval(loaderInterval);
+                setTimeout(() => {
+                    document.getElementById('loader').style.opacity = '0';
+                    setTimeout(() => {
+                        document.getElementById('loader').style.display = 'none';
+                    }, 500);
+                }, 300);
+            }
+        }, 50);
+
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    const mobileMenu = document.getElementById('mobile-menu');
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                }
+            });
+        });
+
+        // Scroll progress indicator
+        window.addEventListener('scroll', function() {
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrollProgress = (scrollTop / scrollHeight) * 100;
+            document.getElementById('scroll-progress').style.width = scrollProgress + '%';
+            
+            // Add shadow to navbar on scroll
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-lg');
+            } else {
+                nav.classList.remove('shadow-lg');
+            }
+        });
+
+        // Particle effect
+        document.addEventListener('DOMContentLoaded', function() {
+            const particles = document.getElementById('particles');
+            const particleCount = window.innerWidth < 768 ? 50 : 120;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                const size = Math.random() * 5 + 1;
+                const posX = Math.random() * window.innerWidth;
+                const posY = Math.random() * window.innerHeight;
+                const delay = Math.random() * 5;
+                const duration = 10 + Math.random() * 15;
+                const opacity = 0.1 + Math.random() * 0.4;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${posX}px`;
+                particle.style.top = `${posY}px`;
+                particle.style.opacity = opacity;
+                particle.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`;
+                
+                particles.appendChild(particle);
+            }
+        });
+
+        // Contact form submission
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Form data
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+            
+            // Create mailto link
+            const mailtoLink = `mailto:ojangojohn6@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage: ${message}`)}`;
+            
+            // Open email client
+            window.location.href = mailtoLink;
+            
+            // Reset form
+            this.reset();
+            
+            // Show success message
+            alert('Your message has been prepared in your email client. Please click send to deliver it!');
+        });
+
+        // Enhanced 3D Skills Visualization
+        function init3DSkills() {
+            const container = document.getElementById('sphere-container');
+            const activeSkill = document.getElementById('active-skill');
+            
+            // Skill data
+            const skills = [
+                { name: "Web Design", level: 95, color: "#FFC947", description: "Creating stunning user interfaces with modern, responsive designs" },
+                { name: "Financial Analysis", level: 92, color: "#00BCD4", description: "Developing financial strategies and analyzing business performance" },
+                { name: "Professional Editing", level: 90, color: "#FFC947", description: "Polishing content for clarity and visual appeal" },
+                { name: "Frontend Dev", level: 90, color: "#FFC947", description: "Building responsive and interactive web applications" },
+                { name: "Backend Dev", level: 85, color: "#00BCD4", description: "Developing server-side logic and APIs" },
+                { name: "UI/UX", level: 92, color: "#FFC947", description: "Designing intuitive and engaging user experiences" },
+                { name: "Branding", level: 88, color: "#FFC947", description: "Creating memorable brand identities" },
+                { name: "Consulting", level: 87, color: "#00BCD4", description: "Strategic digital transformation guidance" },
+                { name: "Project Mgmt", level: 86, color: "#FFC947", description: "Leading projects from concept to completion" },
+                { name: "React.js", level: 89, color: "#00BCD4", description: "Building dynamic user interfaces with React" },
+                { name: "Node.js", level: 84, color: "#FFC947", description: "Developing scalable backend services" },
+                { name: "Python", level: 83, color: "#00BCD4", description: "Creating versatile applications and scripts" },
+                { name: "Graphic Design", level: 91, color: "#FFC947", description: "Crafting visual content and assets" }
+            ];
+
+            const radius = 150;
+            const tags = [];
+            let mouseX = 0, mouseY = 0;
+            let targetRotationX = 0, targetRotationY = 0;
+            let currentRotationX = 0, currentRotationY = 0;
+            const easing = 0.05;
+            
+            // Create skill tags
+            skills.forEach((skill, i) => {
+                const phi = Math.acos(-1 + (2 * i) / skills.length);
+                const theta = Math.sqrt(skills.length * Math.PI) * phi;
+                
+                const x = Math.cos(theta) * Math.sin(phi) * radius;
+                const y = Math.sin(theta) * Math.sin(phi) * radius;
+                const z = Math.cos(phi) * radius;
+                
+                const tag = document.createElement('div');
+                tag.className = 'skill-tag';
+                tag.textContent = skill.name;
+                tag.style.color = skill.color;
+                tag.style.left = `50%`;
+                tag.style.top = `50%`;
+                tag.style.transform = `translate3d(${x}px, ${y}px, 0) scale(1)`;
+                tag.dataset.name = skill.name;
+                tag.dataset.level = skill.level;
+                tag.dataset.description = skill.description;
+                tag.dataset.color = skill.color;
+                
+                tag.addEventListener('mouseover', function() {
+                    activeSkill.classList.remove('hidden');
+                    activeSkill.querySelector('.skill-name').textContent = skill.name;
+                    activeSkill.querySelector('.skill-desc').textContent = skill.description;
+                    activeSkill.querySelector('.skill-level-bar').style.width = `${skill.level}%`;
+                    activeSkill.querySelector('.skill-level-bar').style.background = 
+                        `linear-gradient(90deg, ${skill.color}, ${skill.color === '#FFC947' ? '#FFD700' : '#4DD0E1'})`;
+                    activeSkill.querySelector('.text-tertiary').textContent = `${skill.level}%`;
+                    activeSkill.querySelector('.text-tertiary').style.color = skill.color;
+                    activeSkill.style.borderColor = skill.color;
+                });
+                
+                container.appendChild(tag);
+                tags.push({tag, x, y, z});
+            });
+            
+            // Add glowing dots
+            for (let i = 0; i < 20; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'glowing-dot';
+                
+                // Random position within container
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                
+                dot.style.left = `${posX}%`;
+                dot.style.top = `${posY}%`;
+                dot.style.animationDelay = `${Math.random() * 5}s`;
+                
+                container.appendChild(dot);
+            }
+            
+            // Mouse interaction
+            container.addEventListener('mousemove', function(e) {
+                const rect = container.getBoundingClientRect();
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                mouseX = (e.clientX - rect.left - centerX) / centerX;
+                mouseY = (e.clientY - rect.top - centerY) / centerY;
+                
+                targetRotationY = mouseX * Math.PI;
+                targetRotationX = mouseY * Math.PI;
+            });
+            
+            // Animation loop
+            function animate() {
+                currentRotationX += (targetRotationX - currentRotationX) * easing;
+                currentRotationY += (targetRotationY - currentRotationY) * easing;
+                
+                tags.forEach((item) => {
+                    // Rotate point around Y axis
+                    const x1 = item.x * Math.cos(currentRotationY) - item.z * Math.sin(currentRotationY);
+                    const z1 = item.x * Math.sin(currentRotationY) + item.z * Math.cos(currentRotationY);
+                    
+                    // Rotate point around X axis
+                    const y1 = item.y * Math.cos(currentRotationX) - z1 * Math.sin(currentRotationX);
+                    const z2 = item.y * Math.sin(currentRotationX) + z1 * Math.cos(currentRotationX);
+                    
+                    // Apply perspective
+                    const scale = 1 + z2 / radius * 0.5;
+                    const opacity = 0.7 + (z2 / radius) * 0.3;
+                    
+                    item.tag.style.transform = `translate3d(${x1}px, ${y1}px, 0) scale(${scale})`;
+                    item.tag.style.opacity = opacity;
+                    item.tag.style.zIndex = Math.round(scale * 100);
+                });
+                
+                requestAnimationFrame(animate);
+            }
+            
+            animate();
+        }
+        
+        // Initialize 3D skills when the page loads
+        setTimeout(init3DSkills, 1000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Study: Nexus Horizon AI Platform | John Ojango</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Global Styles */
+        :root {
+            --primary: #0A0A0F;
+            --secondary: #FFC947;
+            --tertiary: #00BCD4;
+            --accent: #E1F5FE;
+            --dark: #121420;
+            --light: #F5F7FA;
+            --cyberblue: #00f3ff;
+            --cyberpurple: #9d4edd;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Exo 2', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0a0a1a, #121230);
+            color: #fff;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        .golden-gradient {
+            background: linear-gradient(90deg, #FFC947 0%, #FFD700 50%, #FFC947 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(255, 201, 71, 0.3);
+        }
+        
+        .cyan-gradient {
+            background: linear-gradient(90deg, #00BCD4 0%, #4DD0E1 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .glass {
+            background: rgba(18, 20, 32, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 201, 71, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .section-header {
+            position: relative;
+            display: inline-block;
+            padding-bottom: 15px;
+        }
+        
+        .section-header:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #FFC947, #00BCD4);
+            border-radius: 2px;
+        }
+        
+        /* Header Styles */
+        header {
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 201, 71, 0.1);
+            padding: 15px 0;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #FFC947, #FFD700);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            color: #E1F5FE;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: #FFC947;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #FFC947;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 160px 0 100px;
+            background: radial-gradient(circle at 20% 30%, rgba(18, 20, 50, 0.6) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, rgba(18, 20, 50, 0.6) 0%, transparent 40%),
+                        linear-gradient(to bottom, #0a0a1a, #121230);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1677442135722-5f5e06d4ea3f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80') no-repeat center center/cover;
+            opacity: 0.2;
+            z-index: -1;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .project-tag {
+            display: inline-block;
+            background: rgba(255, 201, 71, 0.15);
+            color: #FFC947;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 201, 71, 0.3);
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #FFC947, #FFFFFF);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: #E1F5FE;
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .tech-stack {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+        
+        .tech-item {
+            background: rgba(0, 188, 212, 0.15);
+            color: #00BCD4;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            border: 1px solid rgba(0, 188, 212, 0.3);
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 50px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #FFC947;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: #E1F5FE;
+        }
+        
+        /* Case Study Sections */
+        .section {
+            padding: 100px 0;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #FFC947, #00BCD4);
+            border-radius: 2px;
+        }
+        
+        .section-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+        
+        .section-text {
+            font-size: 1.1rem;
+            color: #E1F5FE;
+            line-height: 1.8;
+        }
+        
+        .section-text h3 {
+            color: #FFC947;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        .section-image {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            position: relative;
+            height: 400px;
+        }
+        
+        .section-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .section-image:hover img {
+            transform: scale(1.05);
+        }
+        
+        .section-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(255, 201, 71, 0.1), rgba(0, 188, 212, 0.1));
+            z-index: 1;
+        }
+        
+        .challenge-list {
+            list-style: none;
+            margin-top: 20px;
+        }
+        
+        .challenge-list li {
+            margin-bottom: 15px;
+            padding-left: 30px;
+            position: relative;
+        }
+        
+        .challenge-list li::before {
+            content: '⚡';
+            position: absolute;
+            left: 0;
+            color: #00BCD4;
+        }
+        
+        .solution-list {
+            list-style: none;
+            margin-top: 20px;
+        }
+        
+        .solution-list li {
+            margin-bottom: 15px;
+            padding-left: 30px;
+            position: relative;
+        }
+        
+        .solution-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #FFC947;
+            font-weight: bold;
+        }
+        
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        .impact-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(255, 201, 71, 0.1);
+        }
+        
+        .impact-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 201, 71, 0.3);
+        }
+        
+        .impact-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #FFC947;
+        }
+        
+        .impact-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #FFC947;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, #0a0a1a, #121230);
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1677442135133-33d364e7d1b1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80') no-repeat center center/cover;
+            opacity: 0.15;
+            z-index: -1;
+        }
+        
+        .cta-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .cta-title {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #FFFFFF;
+        }
+        
+        .cta-subtitle {
+            font-size: 1.2rem;
+            color: #E1F5FE;
+            margin-bottom: 40px;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(90deg, #FFC947, #FFD700);
+            color: #0A0A0F;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(255, 201, 71, 0.3);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(255, 201, 71, 0.4);
+        }
+        
+        /* Footer */
+        footer {
+            background: rgba(10, 10, 15, 0.95);
+            padding: 50px 0 30px;
+            border-top: 1px solid rgba(255, 201, 71, 0.1);
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .footer-title {
+            font-size: 1.3rem;
+            color: #FFC947;
+            margin-bottom: 20px;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-links a {
+            color: #E1F5FE;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-links a:hover {
+            color: #FFC947;
+        }
+        
+        .footer-links i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            color: #FFC947;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .social-link:hover {
+            background: #FFC947;
+            color: #0A0A0F;
+            transform: translateY(-3px);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: #E1F5FE;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .section-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .impact-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .impact-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+            }
+        }
+        
+        /* Added styles for charity link */
+        .charity-link {
+            color: #00BCD4;
+            font-weight: 600;
+        }
+        
+        /* Neural Network Animation */
+        .neural-network {
+            position: relative;
+            height: 300px;
+            overflow: hidden;
+            border-radius: 10px;
+            background: linear-gradient(45deg, rgba(10, 10, 15, 0.8), rgba(18, 20, 32, 0.8));
+            border: 1px solid rgba(0, 188, 212, 0.2);
+        }
+        
+        .neuron {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: var(--tertiary);
+            box-shadow: 0 0 10px rgba(0, 188, 212, 0.5);
+        }
+        
+        .connection {
+            position: absolute;
+            height: 2px;
+            background: rgba(0, 188, 212, 0.3);
+            transform-origin: 0 0;
+        }
+        
+        /* Animation for neural network */
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">JOHN OJANGO</div>
+            <nav class="nav-links">
+                <a href="#overview">Overview</a>
+                <a href="#challenges">Challenges</a>
+                <a href="#solutions">Solutions</a>
+                <a href="#impact">Impact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container hero-content">
+            <span class="project-tag">Featured Project</span>
+            <h1>Nexus Horizon AI Platform</h1>
+            <p class="hero-subtitle">Next-generation AI integration platform with neural network capabilities and real-time data processing</p>
+            
+            <div class="tech-stack">
+                <span class="tech-item">React</span>
+                <span class="tech-item">TensorFlow.js</span>
+                <span class="tech-item">Node.js</span>
+                <span class="tech-item">Three.js</span>
+                <span class="tech-item">WebSockets</span>
+                <span class="tech-item">MongoDB</span>
+            </div>
+            
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-value">78%</div>
+                    <div class="stat-label">Efficiency Gain</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">45%</div>
+                    <div class="stat-label">Cost Reduction</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">99.7%</div>
+                    <div class="stat-label">Accuracy Rate</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Overview -->
+    <section class="section" id="overview">
+        <div class="container">
+            <h2 class="section-title">Project Overview</h2>
+            <div class="section-content">
+                <div class="section-text">
+                    <p>The Nexus Horizon AI Platform was conceived as a groundbreaking solution to bridge the gap between complex AI technologies and practical business applications. Traditional AI solutions often require extensive technical knowledge and infrastructure, creating barriers for organizations seeking to leverage artificial intelligence.</p>
+                    
+                    <p>Our mission was to create an intuitive, powerful platform that democratizes AI capabilities while providing enterprise-grade performance. The platform needed to handle real-time data processing at scale while maintaining the flexibility to adapt to diverse industry needs.</p>
+                    
+                    <h3>Key Objectives</h3>
+                    <ul class="challenge-list">
+                        <li>Create a user-friendly interface for non-technical users to build AI workflows</li>
+                        <li>Enable real-time data processing with latency under 100ms</li>
+                        <li>Develop neural network capabilities adaptable to various industry applications</li>
+                        <li>Ensure scalability to handle enterprise-level data volumes</li>
+                        <li>Provide comprehensive analytics and visualization tools</li>
+                    </ul>
+                </div>
+                <div class="neural-network" id="neuralNetwork">
+                    <!-- Neural network visualization will be generated here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technologies Used -->
+    <section class="section" style="background: rgba(10, 10, 30, 0.7);">
+        <div class="container">
+            <h2 class="section-title">Key Technologies</h2>
+            <div class="section-content">
+                <div class="section-image">
+                    <img src="https://images.unsplash.com/photo-1550439062-609e1531270e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Technology Stack">
+                </div>
+                <div class="section-text">
+                    <h3>Advanced Tech Stack</h3>
+                    <p>The Nexus Horizon platform was built using a carefully selected technology stack designed to deliver maximum performance while maintaining flexibility and scalability.</p>
+                    
+                    <ul class="solution-list">
+                        <li><strong>React</strong> - For building a responsive, dynamic user interface with complex state management</li>
+                        <li><strong>TensorFlow.js</strong> - To bring machine learning capabilities directly to the browser</li>
+                        <li><strong>Node.js</strong> - Providing a scalable backend with real-time data processing capabilities</li>
+                        <li><strong>Three.js</strong> - Enabling sophisticated 3D data visualizations of neural networks</li>
+                        <li><strong>WebSockets</strong> - For real-time communication between frontend and backend</li>
+                        <li><strong>MongoDB</strong> - Flexible NoSQL database for handling diverse data structures</li>
+                    </ul>
+                    
+                    <p>This combination allowed us to create a seamless experience where users can build, train, and deploy AI models without needing specialized hardware or deep technical expertise.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Challenges -->
+    <section class="section" id="challenges">
+        <div class="container">
+            <h2 class="section-title">Challenges Faced</h2>
+            <div class="section-content">
+                <div class="section-text">
+                    <p>Developing an enterprise-grade AI platform presented several significant technical and design challenges that required innovative solutions.</p>
+                    
+                    <h3>Major Technical Hurdles</h3>
+                    <ul class="challenge-list">
+                        <li><strong>Real-time Processing Constraints</strong> - Achieving sub-100ms response times for complex AI computations</li>
+                        <li><strong>Browser-based ML Limitations</strong> - Overcoming TensorFlow.js performance constraints in browser environments</li>
+                        <li><strong>Data Visualization Complexity</strong> - Creating intuitive visualizations for multi-dimensional neural network data</li>
+                        <li><strong>Cross-Platform Compatibility</strong> - Ensuring consistent performance across devices and browsers</li>
+                        <li><strong>Security Concerns</strong> - Protecting sensitive data and AI models in a web-based environment</li>
+                    </ul>
+                    
+                    <p>Beyond technical challenges, we also faced significant UX design obstacles in making complex AI concepts accessible to non-technical users without sacrificing advanced functionality for power users.</p>
+                </div>
+                <div class="section-image">
+                    <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="AI Development Challenges">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solutions -->
+    <section class="section" style="background: rgba(10, 10, 30, 0.7);" id="solutions">
+        <div class="container">
+            <h2 class="section-title">Innovative Solutions</h2>
+            <div class="section-content">
+                <div class="section-image">
+                    <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="AI Solutions">
+                </div>
+                <div class="section-text">
+                    <p>Our team developed several innovative approaches to overcome the technical and design challenges presented by the Nexus Horizon platform.</p>
+                    
+                    <h3>Key Technical Solutions</h3>
+                    <ul class="solution-list">
+                        <li><strong>Hybrid Processing Architecture</strong> - Combining client-side TensorFlow.js with server-side Node.js for optimal performance</li>
+                        <li><strong>WebGL Acceleration</strong> - Leveraging GPU capabilities through Three.js for complex visualizations</li>
+                        <li><strong>Modular Neural Network Design</strong> - Creating reusable neural network components for rapid model development</li>
+                        <li><strong>Progressive Data Loading</strong> - Implementing intelligent data streaming to handle large datasets</li>
+                        <li><strong>Role-Based Security Model</strong> - Granular permission system with end-to-end encryption</li>
+                    </ul>
+                    
+                    <h3>UX Innovations</h3>
+                    <ul class="solution-list">
+                        <li>Visual workflow builder with drag-and-drop interface</li>
+                        <li>Interactive 3D model visualization for neural networks</li>
+                        <li>Contextual guidance system for complex operations</li>
+                        <li>Adaptive interface that simplifies for beginners while offering advanced controls</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Impact & Results -->
+    <section class="section" id="impact">
+        <div class="container">
+            <h2 class="section-title">Impact & Results</h2>
+            <div class="impact-grid">
+                <div class="impact-card">
+                    <div class="impact-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="impact-title">45% Cost Reduction</h3>
+                    <p>Clients reduced AI implementation costs by eliminating specialized hardware requirements and reducing development time.</p>
+                </div>
+                
+                <div class="impact-card">
+                    <div class="impact-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3 class="impact-title">78% Efficiency Gain</h3>
+                    <p>Business processes accelerated through real-time data processing and automated decision-making capabilities.</p>
+                </div>
+                
+                <div class="impact-card">
+                    <div class="impact-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3 class="impact-title">99.7% Accuracy</h3>
+                    <p>Neural networks achieved industry-leading accuracy rates across various applications including image recognition and predictive analytics.</p>
+                </div>
+                
+                <div class="impact-card">
+                    <div class="impact-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="impact-title">Adoption Rate</h3>
+                    <p>Over 85% of target users adopted the platform within the first quarter of deployment, citing ease of use and powerful capabilities.</p>
+                </div>
+                
+                <div class="impact-card">
+                    <div class="impact-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3 class="impact-title">Innovation Acceleration</h3>
+                    <p>Clients reported a 3x increase in AI project development speed compared to traditional approaches.</p>
+                </div>
+                
+                <div class="impact-card">
+                    <div class="impact-icon">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <h3 class="impact-title">Industry Recognition</h3>
+                    <p>Winner of the 2023 AI Innovation Award and featured in TechCrunch, Forbes, and Wired.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container cta-content">
+            <h2 class="cta-title">Transform Your Business with AI</h2>
+            <p class="cta-subtitle">Ready to harness the power of next-generation AI for your organization? Let's discuss how the Nexus Horizon platform can drive innovation and efficiency in your business processes.</p>
+            <a href="https://wa.me/254746656248" class="cta-button">Schedule a Demo</a>
+        </div>
+    </section>
+
+    <!-- Footer with Updated Social Media Links -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3 class="footer-title">John Ojango</h3>
+                    <p style="color: #E1F5FE; margin-bottom: 20px;">Digital Alchemist transforming ideas into golden opportunities</p>
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/john_omondi_oj?igsh=MTd2dDFtZDBjeWtxdg==" class="social-link" target="_blank">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://www.facebook.com/share/169K4TCL5h/" class="social-link" target="_blank">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://x.com/OjangoJohn?t=CBtRP10d-FO34E8AxmJ65w&s=09" class="social-link" target="_blank">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/john-ojango-b7171522b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" class="social-link" target="_blank">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3 class="footer-title">Navigation</h3>
+                    <ul class="footer-links">
+                        <li><a href="Index.html"><i class="fas fa-home"></i> Home</a></li>
+                        <li><a href="Index.html#about"><i class="fas fa-user"></i> About</a></li>
+                        <li><a href="Index.html#interests"><i class="fas fa-heart"></i> Interests</a></li>
+                        <li><a href="Index.html#services"><i class="fas fa-briefcase"></i> Work</a></li>
+                        <li><a href="Index.html#services"><i class="fas fa-cog"></i> Services</a></li>
+                        <li><a href="Index.html#portfolio"><i class="fas fa-briefcase"></i> Portfolio</a></li>
+                        <li><a href="Index.html#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3 class="footer-title">Contact</h3>
+                    <ul class="footer-links">
+                        <li><a href="mailto:ojangojohn6@gmail.com"><i class="fas fa-envelope"></i> ojangojohn6@gmail.com</a></li>
+                        <li><a href="tel:+254746656248"><i class="fas fa-phone"></i> +254 746 656 248</a></li>
+                        <li><i class="fas fa-map-marker-alt"></i> Nairobi, Kenya</li>
+                        <li><a href="https://www.facebook.com/share/1Eok8jaJ3G/" class="charity-link" target="_blank"><i class="fas fa-hands-helping"></i> My Charity Work</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 John Ojango. All Rights Reserved. | Digital Alchemist</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.backgroundColor = 'rgba(10, 10, 15, 0.98)';
+                header.style.boxShadow = '0 5px 20px rgba(0, 0, 0, 0.3)';
+            } else {
+                header.style.backgroundColor = 'rgba(10, 10, 15, 0.95)';
+                header.style.boxShadow = 'none';
+            }
+        });
+
+        // Animate stats on scroll
+        function animateStats() {
+            const stats = document.querySelectorAll('.stat-value');
+            stats.forEach(stat => {
+                const target = +stat.innerText.replace('%', '');
+                let count = 0;
+                const duration = 2000;
+                const increment = target / (duration / 16);
+                
+                const updateCount = () => {
+                    if (count < target) {
+                        count += increment;
+                        stat.innerText = Math.ceil(count) + '%';
+                        requestAnimationFrame(updateCount);
+                    } else {
+                        stat.innerText = target + '%';
+                    }
+                };
+                
+                updateCount();
+            });
+        }
+
+        // Trigger animation when stats are in view
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateStats();
+                    observer.disconnect();
+                }
+            });
+        }, { threshold: 0.5 });
+
+        observer.observe(document.querySelector('.stats'));
+        
+        // Create neural network visualization
+        function createNeuralNetwork() {
+            const container = document.getElementById('neuralNetwork');
+            const layers = 5;
+            const neuronsPerLayer = 8;
+            const width = container.offsetWidth;
+            const height = container.offsetHeight;
+            
+            // Create neurons
+            for (let layer = 0; layer < layers; layer++) {
+                for (let i = 0; i < neuronsPerLayer; i++) {
+                    const neuron = document.createElement('div');
+                    neuron.classList.add('neuron');
+                    
+                    // Position neurons in columns
+                    const x = (layer / (layers - 1)) * (width - 20) + 10;
+                    const y = (i / (neuronsPerLayer - 1)) * (height - 20) + 10;
+                    
+                    neuron.style.left = `${x}px`;
+                    neuron.style.top = `${y}px`;
+                    
+                    // Add animation delay
+                    neuron.style.animation = `pulse ${1 + Math.random() * 2}s infinite ${Math.random() * 2}s`;
+                    
+                    container.appendChild(neuron);
+                }
+            }
+            
+            // Create connections
+            const neurons = document.querySelectorAll('.neuron');
+            for (let i = 0; i < neurons.length - neuronsPerLayer; i++) {
+                const neuron1 = neurons[i];
+                const neuron2 = neurons[i + neuronsPerLayer];
+                
+                if (neuron2) {
+                    const x1 = parseFloat(neuron1.style.left);
+                    const y1 = parseFloat(neuron1.style.top);
+                    const x2 = parseFloat(neuron2.style.left);
+                    const y2 = parseFloat(neuron2.style.top);
+                    
+                    const length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+                    const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+                    
+                    const connection = document.createElement('div');
+                    connection.classList.add('connection');
+                    connection.style.width = `${length}px`;
+                    connection.style.left = `${x1}px`;
+                    connection.style.top = `${y1}px`;
+                    connection.style.transform = `rotate(${angle}deg)`;
+                    connection.style.animation = `pulse ${1 + Math.random() * 3}s infinite ${Math.random() * 3}s`;
+                    
+                    container.appendChild(connection);
+                }
+            }
+        }
+        
+        // Initialize neural network on load
+        window.addEventListener('load', createNeuralNetwork);
+    </script>
+</body>
+</html>
